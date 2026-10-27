@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int main() {
+    char text[200];
+    int a, b, i, p, c;
+
+    printf("Enter plaintext: ");
+    fgets(text, sizeof(text), stdin);
+
+    printf("Enter value of a (0-25): ");
+    scanf("%d", &a);
+
+    printf("Enter value of b (0-25): ");
+    scanf("%d", &b);
+
+    if (a < 0 || a > 25 || b < 0 || b > 25 ||
+        gcd(a, 26) != 1) {
+        printf("Invalid keys! Choose a from 0-25 coprime to 26,\n");
+        printf("and b from 0-25.\n");
+        return 1;
+    }
+
+    printf("Encrypted text: ");
+
+    for (i = 0; text[i] != '\0'; i++) {
+        if (isupper((unsigned char)text[i])) {
+            p = text[i] - 'A';
+            c = (a * p + b) % 26;
+            printf("%c", c + 'A');
+        }
+        else if (islower((unsigned char)text[i])) {
+            p = text[i] - 'a';
+            c = (a * p + b) % 26;
+            printf("%c", c + 'a');
+        }
+        else {
+            printf("%c", text[i]);
+        }
+    }
+
+    return 0;
+}
